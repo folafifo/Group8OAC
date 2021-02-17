@@ -14,9 +14,11 @@ The Jorunal Checker Tool (JCT) is equipped to deal with a large chunk of the com
 
 `https://api.jct.cottagelabs.com/calculate?issn=[issn]&ror=[ror]&funder=[funder]`
 
+
 This API can be further tested at this link (fill in at least two of the fields to get a result):
 
 `https://journalcheckertool.org/`
+
 
 And the GitHub Repo, which contains all the back-end and front-end code is here for reference:
 
