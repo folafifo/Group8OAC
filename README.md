@@ -5,7 +5,7 @@
 Group 8 Open-Access Checker tool
 
 ## Team
-Nicholas Dempsey - 2nd Year ICS student
+Nicholas Dempsey = 2nd Year ICS student
 Kian Fay = 3rd Year ICS student
 
 ## Description
