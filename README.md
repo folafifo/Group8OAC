@@ -5,6 +5,7 @@
 Group 8 Open-Access Checker tool
 
 ## Team
+James Deasley = 2nd Year ICS student
 Nicholas Dempsey = 2nd Year ICS student
 Kian Fay = 3rd Year ICS student
 
@@ -14,7 +15,7 @@ A website to help researchers and research groups to transition their publicatio
 ## Current System
 
 
-The Jorunal Checker Tool (JCT) is equipped to deal with a large chunk of the complexity involved with this project. We interact with the REST API by executing a GET request to the following url, filling in the query paramteters:
+The Journal Checker Tool (JCT) is equipped to deal with a large chunk of the complexity involved with this project. We interact with the REST API by executing a GET request to the following url, filling in the query parameters:
 
 `https://api.jct.cottagelabs.com/calculate?issn=[issn]&ror=[ror]&funder=[funder]`
 
