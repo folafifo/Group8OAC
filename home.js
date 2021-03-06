@@ -7,7 +7,6 @@ function openNav() {
   } else {
     document.getElementById("mySidebar").style.width = "10%";
     document.getElementById("main").style.marginLeft = "10%";
-    // document.getElementById("file-upload-container").style.marginLeft = "10%";
   }
 }
 
