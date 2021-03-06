@@ -5,53 +5,63 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-5.0.0-beta2-dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="./bootstrap-5.0.0-beta2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./home.css">
     <title>Open Access Checker Tool</title>
-    <link rel="stylesheet" href="home.css">
 </head>
 
 <body>
-    <div class="header-class">
-        <div id="mySidebar" class="sidebar">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-            <a href="#">Home</a>
-            <a href="#">FAQ</a>
-            <a href="#">How it Works</a>
-            <a href="#">Contact</a>
+    <!-- Start of nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #006aa6;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Open Access Checker Tool</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown link
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li> -->
+                </ul>
+            </div>
         </div>
+    </nav>
+    <!-- End of nav bar -->
 
-        <div id="main">
-            <button class="openbtn" onclick="openNav()">☰</button>
-
+    <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Upload Your BibTeX Bibliography!</h5>
+          <p class="card-text">1. <b>Click</b> the "Choose File" button <br>2. <b>Select</b>  your BibTeX file <br>3. <b>Upload</b> your file!</p>
+          <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Upload</button>
+          </div>
         </div>
-        <div class="open-access-title-box">
-            <h1>Open Access Checker Tool</h1>
+        <div class="card-footer text-muted">
+          Please ensure your file is in the BibTeX file format!
         </div>
-    </div>
+      </div>
 
-    <br>
-    
-    <div class="quick-summary-box">
-        <!-- TO DO: ADD SOME TEXT WITHIN A CARD AND GIVE BRIEF
-        EXPLANATION OF WHAT OUR SERVICE IS... -->
-    </div>
-    
-    <br>
-
-    <div class="file-upload-container" id="file-upload-container">
-        <div class="bibtex-writing">
-            <h2>Upload BibTeX Bibliography Here</h2>
-        </div>
-        <!-- <input type="image" src="./assets/upload-icon.png" alt="" width="100px"> -->
-        <div class="upload-image-holder">
-            <input type="file">
-        </div>
-        <div>
-            <button class="submit-bibtex"></button>
-        </div>
-
-    </div>
-
-    <script src="./home.js"></script>
+    <script src="./bootstrap-5.0.0-beta2-dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

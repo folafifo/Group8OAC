@@ -1,154 +1,40 @@
-body {
-  margin: 0%;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #004268;
+/* Color of the brand */
+div.container-fluid a.navbar-brand {
+  font-size: 2rem;
+  color: white;
   overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
 }
 
-.sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: white;
-  display: block;
-  transition: 0.3s;
-}
-
-.sidebar a:hover {
-  color: #f1f1f1;
-}
-
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
-
-/* Child of Header */
-.openbtn {
-  font-size: 30px;
-  cursor: pointer;
-  background-color: #006aa6;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
-
-.openbtn:hover {
-  background-color: #444;
-}
-
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-}
-
-div.quick-summary-box {
+.collapse.navbar-collapse ul{
   margin: auto;
-  text-align: center;
-  width: 30%;
+  
 }
 
-/* Parent header */
-div.header-class {
-  display: flex;
-  margin: 0%;
-  background-color: #006aa6;
+.collapse.navbar-collapse ul li {
+  font-size: 1.5rem;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
-/* Child of header */
-div h1 {
-  /* margin-left: 35%; */
+.collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active) {
   color: white;
 }
 
-div.open-access-title-box {
-margin: auto;
+.collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active):hover {
+  color: black;
 }
 
-/* Parent file upload container */
-.file-upload-container {
-  margin-top: 1%;
-  display: flex;
-  background-color: white;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.navbar-toggler span.navbar-toggler-icon {
+  filter: invert(100%);
 }
 
-h2 {
-  padding: 0%;
-  margin: 0%;
-}
-
-div.file-upload-container .bibtex-writing {
-  /* margin-top: 5%;
-  margin-bottom: 1%;
-  width: 30%;
-  padding-left: 10%; */
-  margin: 2%;
-}
-
-div.file-upload-container .bibtex-writing h2 {
-  justify-content: center;
-}
-
-div.upload-image-holder {
-  width: 30%;
-  margin: 0px;
+.card {
+  max-width: 40%;
   margin: auto;
+  margin-top: 10%;
+  background-color: #002435;
 }
 
-div.upload-image-holder input {
-  padding-left: 30%;
-  width: auto;
+.card * {
+  color: white;
 }
-
-@media (max-width: 768px) {
-  /* For mobile phones:  */
-  .file-upload-container {
-    flex-direction: column;
-  }
-  div h1 {
-    margin-right: 10px;
-  }
-}
-
-div button.submit-bibtex {
-    background: #006aa6;
-    background-image: url("./assets/upload-icon.png");
-    background-size: cover;
-    background-position: center;
-    display: inline-block;
-    border: none;
-    padding: 20px;
-    width: 70px;
-    border-radius: 900px;
-    height: 70px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  div button.submit-bibtex:hover {
-    width: 75px;
-    height: 75px;
-    background: green;
-    /* background-image: url("./assets/upload-icon-blue.png"); */
-    display: inline-block;
-  }
-
-
