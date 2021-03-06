@@ -38,3 +38,8 @@ div.container-fluid a.navbar-brand {
 .card * {
   color: white;
 }
+
+div ul.navbar-nav {
+  width: 100%;
+  justify-content: flex-end;
+}
