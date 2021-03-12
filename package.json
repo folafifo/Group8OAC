@@ -1,0 +1,25 @@
+{
+  "name": "group8oac",
+  "version": "1.0.0",
+  "description": "Open access checker backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "bibtex": "0.9.0",
+    "express": "^4.17.1",
+    "express-openid-connect": "^2.3.0",
+    "path": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/folafifo/Group8OAC.git"
+  },
+  "author": "Group 8 Software Engineering Trinity College Dublin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/folafifo/Group8OAC/issues"
+  },
+  "homepage": "https://github.com/folafifo/Group8OAC#readme"
+}
