@@ -16,6 +16,10 @@ Kathleen Jones = 3rd Year ICS student
 ## Description
 A website to help researchers and research groups to transition their publication planning, in particular adjusting to submitting to venues that are open access or that allow one to make a preprint version public.
 
+## Setup
+- npm install
+- npm start
+
 ## Current System
 
 
