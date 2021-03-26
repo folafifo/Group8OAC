@@ -31,7 +31,8 @@ div.container-fluid a.navbar-brand {
 .card {
   max-width: 40%;
   margin: auto;
-  margin-top: 10%;
+  margin-top: 5%;
+  margin-bottom: 5%;
   background-color: #002435;
 }
 
@@ -42,4 +43,8 @@ div.container-fluid a.navbar-brand {
 div ul.navbar-nav {
   width: 100%;
   justify-content: flex-end;
+}
+
+#textinputandbutton {
+  justify-content: center;
 }
