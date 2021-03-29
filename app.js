@@ -1,6 +1,45 @@
 const express = require('express');
 const path = require('path')
 const { auth, requiresAuth  } = require('express-openid-connect');
+const mongoose = require('mongoose')
+
+/**
+ * The area between here and the subsequent README contains the functionality for the
+ * database, but has not been implemented yet. See the comment bellow, also written 
+ * in this commit. We implement mongoose, an API allowing us to use object models in
+ * mongoDB.
+ */
+const uri = "mongodb+srv://Admin:Group8Pass9921{-3}@cluster0.p2pzh.mongodb.net/UserDataCollection?retryWrites=true&w=majority";
+mongoose.connect(uri, 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// This is the schema for the user profile
+var messagesSchema = new mongoose.Schema({
+    username: String,
+    queryiesByDate: [{ query: String, date: Date }]
+});
+
+// Here we formally make our schema into a mongoose schema
+var MessageModel = mongoose.model('Messages', messagesSchema);
+
+// And here we create an instance of the schema to later save to the db
+var messageToSave = new MessageModel({
+    username: "trial",
+    queryiesByDate: [{query: "trialQuery", date: Date()}]
+})
+
+// This does the saving
+messageToSave.save().then(() => {
+  mongoose.disconnect();
+})
+.catch(error => console.log(error));
+
 
 /** README:
  *      So far, when a request is made to the domain (localhost:3000 while in development),
@@ -50,6 +89,10 @@ app.get('/', (req, res) => {
 ** non-logged in user tried to access this route they are redirected to log in */
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
+
+    // Here we would like to check if we already have a user profile, and
+    // if not, we create an entry in the database for the user then return the data
+    // CODING STILL NEEDED
 })
 
 // Start the server
