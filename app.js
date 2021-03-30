@@ -22,23 +22,32 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // This is the schema for the user profile
 var messagesSchema = new mongoose.Schema({
     username: String,
+    email: String,
     queryiesByDate: [{ query: String, date: Date }]
 });
 
 // Here we formally make our schema into a mongoose schema
-var MessageModel = mongoose.model('Messages', messagesSchema);
+var MessageModel = mongoose.model('User database', messagesSchema);
 
-// And here we create an instance of the schema to later save to the db
-var messageToSave = new MessageModel({
-    username: "trial",
-    queryiesByDate: [{query: "trialQuery", date: Date()}]
-})
+// This message gets called below to add a user entry. We must always first check
+// that only one or zero database entry exists at any one time. We will use email addresses
+// to uniquely identify users
+var addUser = function(name, email){
+    
+    // And here we create an instance of the schema to later save to the db
+    var messageToSave = new MessageModel({
+        username: name,
+        email: email,
+        queryiesByDate: [{query: "trialQuery", date: Date()}]
+    })
 
-// This does the saving
-messageToSave.save().then(() => {
-  mongoose.disconnect();
-})
-.catch(error => console.log(error));
+    // This does the saving
+    messageToSave.save().then(() => {
+        mongoose.disconnect();
+    })
+    .catch(error => console.log(error));
+    
+}
 
 
 /** README:
@@ -80,6 +89,30 @@ app.get('/', (req, res) => {
         // is no way to reach this page without being logged in. If it was in the statically 
         // served ./public directory, this would not be the case
         res.sendFile('./private/homeloggedin.html', { root: __dirname });
+        
+
+        // This queries the database to see if the user alrady has a file, and
+        // if not we make one
+        var logged_in_email = req.oidc.user.email;
+        var logged_in_name = req.oidc.user.name;
+
+        MessageModel.find(function(err, userDocuments){
+            
+            // If we get something back for this var, meaning the collection exists
+            if(userDocuments){
+                
+                var refined = userDocuments.filter(entry => entry.get('email') == logged_in_email);
+
+                // If we have no entry, we make one, and if we have more than one, we throw an error
+                if(refined.length < 1){
+                    addUser(logged_in_name, logged_in_email)
+                }else if(refined.length > 1){
+                    throw new Error("ERROR - too many database entries for this email")
+                }
+
+            }
+        });
+        
     } else {
         res.sendFile('./public/home.html', { root: __dirname });
     }
@@ -89,10 +122,6 @@ app.get('/', (req, res) => {
 ** non-logged in user tried to access this route they are redirected to log in */
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
-
-    // Here we would like to check if we already have a user profile, and
-    // if not, we create an entry in the database for the user then return the data
-    // CODING STILL NEEDED
 })
 
 // Start the server
