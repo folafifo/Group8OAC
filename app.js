@@ -32,7 +32,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, staticFolder)));
 app.use(auth(config));
 // Needed for the incoming bibtex file...
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "2mb" }));
 
 /* At this stage, the root route returns the home HTML page, and the CSS file can get
 ** fetched by the browser becuase we are serving the static folder. This way, all the links
@@ -61,10 +61,20 @@ app.get('/profile', requiresAuth(), (req, res) => {
 app.post("/unparsed", (request, response) => {
     // Parse the bibtex file
     const bibtex = bibtexParse.entries(request.body["input"]);
-    response.json({
-    status: "success",
-    parsed: bibtex,
-  });
+    // if there was an error
+    if(bibtex == undefined || bibtex.length == 0) {
+        response.json({
+            status: "failure",
+            parsed: bibtex
+        });
+    }
+    // else if it was ok
+    else {
+        response.json({
+            status: "success",
+            parsed: bibtex,
+        });
+    }
 });
 
 // Start the server

@@ -43,7 +43,8 @@
           <h5 class="card-title">Upload Your BibTeX File!</h5>
           <p class="card-text">1. <b>Click</b> the "Choose File" button <br>2. <b>Select</b>  your BibTeX file <br>3. <b>Upload</b> your file!</p>
           <div class="input-group">
-            <input type="file" class="form-control" id="inputBibFile" aria-describedby="inputBibFile" aria-label="Upload" style="color: black;">
+            <!-- Only accept bibtex and txt files for now -->
+            <input type="file" class="form-control" accept=".bib,.txt" id="inputBibFile" aria-describedby="inputBibFile" aria-label="Upload" style="color: black;">
             <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" onclick="grabFile()">Upload</button>
           </div>
         </div>
