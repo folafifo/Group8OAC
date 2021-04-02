@@ -41,7 +41,7 @@ var addUser = function(name, email){
     var messageToSave = new MessageModel({
         username: name,
         email: email,
-        queryiesByDate: [{query: "trialQuery", date: Date(), journal: "TestJournal"}]
+        queryiesByDate: []
     })
 
     // This does the saving
