@@ -5,8 +5,7 @@ const mongoose = require('mongoose')
 
 /**
  * The area between here and the subsequent README contains the functionality for the
- * database, but has not been implemented yet. See the comment bellow, also written 
- * in this commit. We implement mongoose, an API allowing us to use object models in
+ * database. We implement mongoose, an API allowing us to use object models in
  * mongoDB.
  */
 const uri = "mongodb+srv://Admin:Group8Pass9921{-3}@cluster0.p2pzh.mongodb.net/UserDataCollection?retryWrites=true&w=majority";
@@ -19,11 +18,13 @@ mongoose.connect(uri,
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// This is the schema for the user profile
+// This is the schema for the user profile. We should only save to the database
+// after the query has ran, as this automatically returns the journal name, given the
+// ISSN
 var messagesSchema = new mongoose.Schema({
     username: String,
     email: String,
-    queryiesByDate: [{ query: String, date: Date }]
+    queryiesByDate: [{ query: String, date: Date , journal: String}]
 });
 
 // Here we formally make our schema into a mongoose schema
@@ -34,11 +35,13 @@ var MessageModel = mongoose.model('User database', messagesSchema);
 // to uniquely identify users
 var addUser = function(name, email){
     
-    // And here we create an instance of the schema to later save to the db
+    // And here we create an instance of the schema to later save to the db.
+    // Here is an example of what could go in as an element of the queryiesByDate
+    // list: {query: "trialQuery", date: Date(), journal: "TestJournal"}
     var messageToSave = new MessageModel({
         username: name,
         email: email,
-        queryiesByDate: [{query: "trialQuery", date: Date()}]
+        queryiesByDate: [{query: "trialQuery", date: Date(), journal: "TestJournal"}]
     })
 
     // This does the saving
