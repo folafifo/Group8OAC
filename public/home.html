@@ -37,45 +37,65 @@
     </nav>
     <!-- End of nav bar -->
 
-    <!-- Card 1: BibTeX file upload -->
+    <!-- Card 3: Funder upload -->
     <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Upload Your BibTeX File!</h5>
-          <p class="card-text">1. <b>Click</b> the "Choose File" button <br>2. <b>Select</b>  your BibTeX file <br>3. <b>Upload</b> your file!</p>
-          <div class="input-group">
-            <!-- Only accept bibtex and txt files for now -->
-            <input type="file" class="form-control" accept=".bib,.txt" id="inputBibFile" aria-describedby="inputBibFile" aria-label="Upload" style="color: black;">
-            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" onclick="grabFile()">Upload</button>
-          </div>
+      <div class="card-body">
+        <h5 class="card-title">My Funder & Institution</h5>
+        <p class="card-text">1. <b>Enter</b> the name of your Funder <br>2. <b>Enter</b> the name of your Institution <br>3. <b>Upload</b> your file!</p>
+        
+        <h6 class="card-text">My Funder</h6>
+        <div class="input-group">
+          <input type="search" class="form-control" id="inputFunder" aria-describedby="inputFunder" aria-label="Upload" style="color: black;">
         </div>
-        <div class="card-footer text-muted">
-          Please ensure your file is in the BibTeX file format! <br>
-          For more information on this file format, vist <a href="http://www.bibtex.org/">here</a>
+
+        <p></p>
+
+        <h6 class="card-text">My Institution</h6>
+        <div class="input-group">
+          <input type="search" class="form-control" id="inputInstitution" aria-describedby="inputInstitution" aria-label="Upload" style="color: black;">
         </div>
+        
       </div>
     </div>
-  </nav>
-  <!-- End of nav bar -->
 
-      <!-- Card 2: BibTeX formatted text upload -->
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Upload Your BibTeX Text!</h5>
-          <p class="card-text">1. <b>Paste</b> your .bib file contents in the textbox below <br>2. <b>Upload</b> your file!</p>
-          <div class="input-group" id="textinputandbutton">
-            <textarea rows = "4" cols = "40" name = "inputBibText" id="inputBibText" style="resize: none; color: black;"></textarea>
-            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" onclick="grabText()">Upload</button>
-          </div>
-        </div>
-        <div class="card-footer text-muted">
-          Please ensure your text is in the BibTeX file format! <br>
-          For more information on this format, vist <a href="http://www.bibtex.org/">here</a>
+    <!-- Card 1: BibTeX file upload -->
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Upload Your BibTeX File!</h5>
+        <p class="card-text">1. <b>Click</b> the "Choose File" button <br>2. <b>Select</b>  your BibTeX file <br>3. <b>Upload</b> your file!</p>
+        <div class="input-group">
+          <!-- Only accept bibtex and txt files for now -->
+          <input type="file" class="form-control" accept=".bib,.txt" id="inputBibFile" aria-describedby="inputBibFile" aria-label="Upload" style="color: black;">
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" onclick="grabFile()">Upload</button>
         </div>
       </div>
-      <!-- Card 2: BibTeX formatted text upload - end -->
+      <div class="card-footer text-muted">
+        Please ensure your file is in the BibTeX file format! <br>
+        For more information on this file format, vist <a href="http://www.bibtex.org/">here</a>
+      </div>
+    </div>
+
+    <!-- Card 2: BibTeX formatted text upload -->
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Upload Your BibTeX Text!</h5>
+        <p class="card-text">1. <b>Paste</b> your .bib file contents in the textbox below <br>2. <b>Upload</b> your file!</p>
+        <div class="input-group" id="textinputandbutton">
+          <textarea rows = "4" cols = "40" name = "inputBibText" id="inputBibText" style="resize: none; color: black;"></textarea>
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" onclick="grabText()">Upload</button>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        Please ensure your text is in the BibTeX file format! <br>
+        For more information on this format, vist <a href="http://www.bibtex.org/">here</a>
+      </div>
+    </div>
+    <!-- Card 2: BibTeX formatted text upload - end -->
 
     <script src="./dependencies/bootstrap-5.0.0-beta2-dist/js/bootstrap.min.js"></script>
     <script src="./home.js"></script>
+  </div>
+
 </body>
 
 
