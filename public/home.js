@@ -4,13 +4,24 @@ let parsedData = "";
 // Grabs the BibTeX file uploaded by the user and calls the runParser() function
 async function grabFile() {
   var x = document.getElementById("inputBibFile");
+  
+  var funder = document.getElementById("inputFunder").value;
+  var institution = document.getElementById("inputInstitution").value;
+  
   // Don't allow another file upload while processing the current one
   x.disabled = true;
+  
+  funder.disabled = true;
+  institution.disabled = true;
+  
   var reader = new FileReader();
 
   // error handling if they click upload without selecting a file
   if (x.files[0] == null) {
     alert("Please input a BibTeX file")
+  }
+  else if (funder == "" || institution == "") {
+    alert("Please enter your Funder and Institution")
   }
   else {
     // error handling if file uploaded is too big (number below in bytes)
@@ -28,7 +39,14 @@ async function grabFile() {
       };
     }
   }
+
+  console.log("Funder: " + funder);
+  console.log("Institution: " + institution);
+
   x.disabled = false;
+  
+  funder.disabled = false;
+  institution.disabled = false;
 }
 
 // Grabs the text inputted by the user and calls the runParser() function
