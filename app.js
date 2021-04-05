@@ -1,7 +1,58 @@
 const express = require('express');
 const path = require('path')
 const { auth, requiresAuth  } = require('express-openid-connect');
+const mongoose = require('mongoose');
 const bibtexParse = require('bibtex-parse');
+
+/**
+ * The area between here and the subsequent README contains the functionality for the
+ * database. We implement mongoose, an API allowing us to use object models in
+ * mongoDB.
+ */
+const uri = "mongodb+srv://Admin:Group8Pass9921{-3}@cluster0.p2pzh.mongodb.net/UserDataCollection?retryWrites=true&w=majority";
+mongoose.connect(uri, 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// This is the schema for the user profile. We should only save to the database
+// after the query has ran, as this automatically returns the journal name, given the
+// ISSN
+var messagesSchema = new mongoose.Schema({
+    username: String,
+    email: String,
+    queryiesByDate: [{ query: String, date: Date , journal: String}]
+});
+
+// Here we formally make our schema into a mongoose schema
+var MessageModel = mongoose.model('User database', messagesSchema);
+
+// This message gets called below to add a user entry. We must always first check
+// that only one or zero database entry exists at any one time. We will use email addresses
+// to uniquely identify users
+var addUser = function(name, email){
+    
+    // And here we create an instance of the schema to later save to the db.
+    // Here is an example of what could go in as an element of the queryiesByDate
+    // list: {query: "trialQuery", date: Date(), journal: "TestJournal"}
+    var messageToSave = new MessageModel({
+        username: name,
+        email: email,
+        queryiesByDate: []
+    })
+
+    // This does the saving
+    messageToSave.save().then(() => {
+        mongoose.disconnect();
+    })
+    .catch(error => console.log(error));
+    
+}
+
 
 /** README:
  *      So far, when a request is made to the domain (localhost:3000 while in development),
@@ -44,6 +95,30 @@ app.get('/', (req, res) => {
         // is no way to reach this page without being logged in. If it was in the statically 
         // served ./public directory, this would not be the case
         res.sendFile('./private/homeloggedin.html', { root: __dirname });
+        
+
+        // This queries the database to see if the user alrady has a file, and
+        // if not we make one
+        var logged_in_email = req.oidc.user.email;
+        var logged_in_name = req.oidc.user.name;
+
+        MessageModel.find(function(err, userDocuments){
+            
+            // If we get something back for this var, meaning the collection exists
+            if(userDocuments){
+                
+                var refined = userDocuments.filter(entry => entry.get('email') == logged_in_email);
+
+                // If we have no entry, we make one, and if we have more than one, we throw an error
+                if(refined.length < 1){
+                    addUser(logged_in_name, logged_in_email)
+                }else if(refined.length > 1){
+                    throw new Error("ERROR - too many database entries for this email")
+                }
+
+            }
+        });
+        
     } else {
         res.sendFile('./public/home.html', { root: __dirname });
     }
