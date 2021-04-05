@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path')
 const { auth, requiresAuth  } = require('express-openid-connect');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bibtexParse = require('bibtex-parse');
 
 /**
  * The area between here and the subsequent README contains the functionality for the
@@ -81,6 +82,8 @@ const config = {
 const app = express();
 app.use(express.static(path.join(__dirname, staticFolder)));
 app.use(auth(config));
+// Needed for the incoming bibtex file...
+app.use(express.json({ limit: "2mb" }));
 
 /* At this stage, the root route returns the home HTML page, and the CSS file can get
 ** fetched by the browser becuase we are serving the static folder. This way, all the links
@@ -126,6 +129,28 @@ app.get('/', (req, res) => {
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
 })
+
+/* This is the parser route that parses the text input and returns the results as a
+   response */
+
+app.post("/unparsed", (request, response) => {
+    // Parse the bibtex file
+    const bibtex = bibtexParse.entries(request.body["input"]);
+    // if there was an error
+    if(bibtex == undefined || bibtex.length == 0) {
+        response.json({
+            status: "failure",
+            parsed: bibtex
+        });
+    }
+    // else if it was ok
+    else {
+        response.json({
+            status: "success",
+            parsed: bibtex,
+        });
+    }
+});
 
 // Start the server
 app.listen(PORT);
