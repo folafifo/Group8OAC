@@ -12,8 +12,8 @@ div.container-fluid a.navbar-brand {
 
 .collapse.navbar-collapse ul li {
   font-size: 1.5rem;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active) {
@@ -29,9 +29,7 @@ div.container-fluid a.navbar-brand {
 }
 
 .card {
-  max-width: 40%;
-  margin: auto;
-  margin-top: 10%;
+  max-width: 100%;
   background-color: #002435;
 }
 
@@ -39,7 +37,28 @@ div.container-fluid a.navbar-brand {
   color: white;
 }
 
+div.col-5 .card {
+  min-width: 40%;
+  max-width: 90%;
+  min-height: 100%;
+  margin: auto;
+}
+
+div.col-2 {
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+}
+
 div ul.navbar-nav {
   width: 100%;
   justify-content: flex-end;
+}
+
+#textinputandbutton {
+  justify-content: center;
+}
+
+.row {
+  margin-top: 10%;
 }

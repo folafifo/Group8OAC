@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
         // We store the logged in homepage seperately for demonstration. Note how there
         // is no way to reach this page without being logged in. If it was in the statically 
         // served ./public directory, this would not be the case
-        res.sendFile('./private/homeloggedin.html', { root: __dirname });
+        res.sendFile('./public/private/homeloggedin.html', { root: __dirname });
         
 
         // This queries the database to see if the user alrady has a file, and
