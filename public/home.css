@@ -12,8 +12,8 @@ div.container-fluid a.navbar-brand {
 
 .collapse.navbar-collapse ul li {
   font-size: 1.5rem;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active) {
@@ -60,15 +60,4 @@ div ul.navbar-nav {
 
 #textinputandbutton {
   justify-content: center;
-}
-
-button {
-	border: 1px solid transparent;
-	background-color: navy;
-	border-radius: 2px;
-	color: white;
-	
-	margin: auto;
-	margin-top: 1%;
-	margin-left: 1%
 }
