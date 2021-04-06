@@ -1,3 +1,6 @@
+var issn = ""
+var institution = ""
+var funder = ""
 // Grab file and send to server for parsing
 let parsedData = "";
 
@@ -5,8 +8,8 @@ let parsedData = "";
 async function grabFile() {
   var x = document.getElementById("inputBibFile");
   
-  var funder = document.getElementById("inputFunder").value;
-  var institution = document.getElementById("inputInstitution").value;
+  funder = document.getElementById("inputFunder").value;
+  institution = document.getElementById("inputInstitution").value;
   
   // Don't allow another file upload while processing the current one
   x.disabled = true;
@@ -90,7 +93,46 @@ async function runParser(input) {
   } else {
     // console logging the results for now, but will change when the JCT API caller is working
     jsonResponse["parsed"].forEach((element) => {
+      issn = jsonResponse["parsed"]["journal"]
+      accessAPI(issn,institution,funder)
+
+
+
+
       console.log(element);
     });
   }
+}
+
+async function run(){
+
+}
+
+// Function to Access API
+async function accessAPI(issn,institution,funder){
+  if((issn != "") && (institution != "") && (funder != "")){
+      let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=${funder}`
+      let result = await get(url)
+      console.log(result)
+  }
+  else if ((issn != "") && (institution != "")){
+      let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=[funder]`
+      let result = await get(url)
+      console.log(result)
+  }
+  else{
+      console.log("Input is invalid")
+  }
+}
+// Function performs Get Request from API
+async function get(url) {
+
+
+  const response =    await fetch(url, {
+      'method': 'GET',
+
+  })
+
+  let data = await response.json()
+  return data;
 }
