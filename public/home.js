@@ -93,12 +93,8 @@ async function runParser(input) {
   } else {
     // console logging the results for now, but will change when the JCT API caller is working
     jsonResponse["parsed"].forEach((element) => {
-      issn = jsonResponse["parsed"]["journal"]
+      issn = element["JOURNAL"]
       accessAPI(issn,institution,funder)
-
-
-
-
       console.log(element);
     });
   }
