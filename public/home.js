@@ -3,6 +3,7 @@ var institution = ""
 var funder = ""
 // Grab file and send to server for parsing
 let parsedData = "";
+let urls = []
 
 // Grabs the BibTeX file uploaded by the user and calls the runParser() function
 async function grabFile() {
@@ -88,6 +89,7 @@ async function runParser(input) {
       'status' is either success if parsed or failure if there was a problem
       'parsed' will contain an array of the bibtex entries iff the status is success
   */
+
   if (jsonResponse["status"] == "failure") {
     alert("You submitted an incorrectly formatted/invalid BibTeX file");
   } else {
@@ -97,6 +99,10 @@ async function runParser(input) {
       accessAPI(issn,institution,funder)
       console.log(element);
     });
+
+    localStorage.setItem("urls", JSON.stringify(urls))
+    window.location.replace("./results.html")
+
   }
 }
 
@@ -108,27 +114,13 @@ async function run(){
 async function accessAPI(issn,institution,funder){
   if((issn != "") && (institution != "") && (funder != "")){
       let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=${funder}`
-      let result = await get(url)
-      console.log(result)
+      urls.push(url)
   }
   else if ((issn != "") && (institution != "")){
       let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=[funder]`
-      let result = await get(url)
-      console.log(result)
+      urls.push(url)
   }
   else{
       console.log("Input is invalid")
   }
-}
-// Function performs Get Request from API
-async function get(url) {
-
-
-  const response =    await fetch(url, {
-      'method': 'GET',
-
-  })
-
-  let data = await response.json()
-  return data;
 }
