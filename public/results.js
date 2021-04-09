@@ -201,6 +201,15 @@ async function calculatePercentageMaybeOA(){
     let maybeCounter = 0
     let alreadyCounter = 0
 
+    // Find number already fully OA
+    for (let index = 0; index < fully_oaArr.length; index++) {
+        if(fully_oaArr[index] == "yes"){
+            alreadyCounter++
+        }
+    }
+
+    if(alreadyCounter == results.length) return 0;
+
     // Find number of journals that may become OA in the future
     // Use array to make sure not to count them twice
     for (let index = 0; index < tjArr.length; index++) {
@@ -216,13 +225,6 @@ async function calculatePercentageMaybeOA(){
     for (let index = 0; index < self_archivingArr.length; index++) {
         if(maybeOA[index] != "yes"){
             maybeOA[index] = self_archivingArr[index]
-        }
-    }
-    
-    // Find number already fully OA
-    for (let index = 0; index < fully_oaArr.length; index++) {
-        if(fully_oaArr[index] == "yes"){
-            alreadyCounter++
         }
     }
 
