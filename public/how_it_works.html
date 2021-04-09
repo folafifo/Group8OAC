@@ -31,16 +31,6 @@
                     <li class="nav-item">
                         <a class="nav-link" class="how-it-works" href="#">How it Works</a>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown link
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li> -->
                 </ul>
             </div>
         </div>
@@ -50,12 +40,30 @@
 	<!-- main how it works section -->
 	
 	<main class="container" style="padding-top: 5%; padding-bottom: 5%;">
-	<h1><b>How It Works</b></h1>
-	<h2  style="margin-top: 5%;" >System Architecture</h2>
-	<h3 style="margin-top: 3%;">API</h3>
-	<h3 style="margin-top: 3%;">Algorithm</h3>
-	
-	
+        <h1><b>How It Works</b></h1>
+        <h3 style="margin-top: 5%;"><b>The Basics</b></h3>
+            <p>The Open-Access Checker takes in your funder and institution, along with a BibTeX file 
+                containing a bibliography of academic journals, in order to check the Open-Access 
+                compliance of these journals with your funder and institution.</p>
+        <h3 style="margin-top: 3%;"><b>API</b></h3>
+            <p>The Open-Access Checker makes calls to an existing 
+                <a href="https://journalcheckertool.org/apidocs">“Journal Checker Tool” API</a>, 
+                but in batch form, allowing for researchers to check more journals more quickly, 
+                but using the same background functionality.</p>
+        <h3 style="margin-top: 3%;"><b>Results</b></h3>
+            <p>When the Open-Access Checker has finished checking the open-access compliance of your submitted journals, funder, 
+                and institution, it displays the percentage of these journals which are fully open-access compliant, 
+                along with the percentage that may be open access compliant in the future.</p>
+            <p>A journal's potential future open-access compliance is based on whether it is a transformative journal, 
+                it’s publisher has entered into a transformative agreement with your institution, or it is in self-archiving 
+                for open-access publishing at a later date.</p>
+            <p>Journals are clearly highlighted in either:
+                <ul>
+                    <li><b style="color: green;">GREEN</b> (fully open-access),</li>
+                    <li><b style="color: red;">RED</b> (not open-access),</li>
+                    <li>or <b style="color: orange;">YELLOW</b> (may be open-access in the future).</li>
+                </ul>     
+            </p>
 	</main>
 	
 	<!-- end how it works-->
