@@ -95,11 +95,15 @@ async function runParser(input) {
   } else {
     // console logging the results for now, but will change when the JCT API caller is working
     jsonResponse["parsed"].forEach((element) => {
-      issn = element["JOURNAL"]
+      if(element.JOURNAL){
+        issn = element["JOURNAL"]
+      }
+      else if(element.ORGANIZATION){
+        issn = element["ORGANIZATION"]
+      }
+     
       accessAPI(issn,institution,funder)
-      console.log(element);
     });
-
     localStorage.setItem("urls", JSON.stringify(urls))
     window.location.replace("./results.html")
 

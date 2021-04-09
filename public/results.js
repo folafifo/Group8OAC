@@ -15,6 +15,13 @@ var fully_oaArr = []
 var taArr = []
 var self_archivingArr = []
 
+/* Array that holds whether a particular journal/organization has already been seen
+   to prevent duplication when printing
+*/
+var hasSeenArr = {}
+var invalidEntries = {failures: {}}
+
+
 // Array to keep track of whether journals are OA ("yes"|"no"|"maybe")
 var journalsOA = []
 
@@ -29,7 +36,6 @@ var journalNode, tjNode, foaNode, taNode, saNode
 window.onload = async function() {
 
     let urls = JSON.parse(localStorage.getItem("urls"))
-    
     for (let index = 0; index < urls.length; index++) {
         let url = urls[index];
         let result = await get(url)
@@ -53,6 +59,11 @@ window.onload = async function() {
             console.log("Failure J:")
             console.log(url)
             missingJournals = true
+            let temp = url.split("=")[1]
+            let key = temp.substring(0,temp.length-4)
+            if(!invalidEntries.failures[key]) {
+                invalidEntries.failures[key] = "No results were retrieved"
+            }
         }
     }
 
@@ -77,7 +88,9 @@ async function get(url) {
 async function populateArrays() {
 
     for (let index = 0; index < results.length; index++) {
-        
+        if (!hasSeenArr[results[index]['request']['journal'][0]['title']]){
+            hasSeenArr[results[index]['request']['journal'][0]['title']] = true;
+        }
         journalsArr[index] = results[index]['request']['journal'][0]['title']
         tjArr[index] = results[index]['results'][0]['compliant']
         fully_oaArr[index] = results[index]['results'][1]['compliant']
@@ -128,55 +141,68 @@ async function writeToPage(){
 
     // Write information from each journal to page
     for (let index = 0; index < results.length; index++) {
-        journalStr = (journalsArr[index])
-        tjStr = ("- Transformative Journal: " + tjArr[index])
-        foaStr = ("- Fully Open-Access: " + fully_oaArr[index])
-        taStr = ("- Transformative Agreement: " + taArr[index])
-        saStr = ("- Self-Archiving: " + self_archivingArr[index])
+        if(hasSeenArr[results[index]['request']['journal'][0]['title']]) {
+            hasSeenArr[results[index]['request']['journal'][0]['title']] = false;
+            journalStr = (journalsArr[index])
+            tjStr = ("- Transformative Journal: " + tjArr[index])
+            foaStr = ("- Fully Open-Access: " + fully_oaArr[index])
+            taStr = ("- Transformative Agreement: " + taArr[index])
+            saStr = ("- Self-Archiving: " + self_archivingArr[index])
 
-        section = document.createElement("div")
-        
-        style="color: green;"
+            section = document.createElement("div")
 
-        paragraph = document.createElement("p")
+            style="color: green;"
 
-        if(journalsOA[index] == "yes"){
-            paragraph.setAttribute("style", "color: green;")
-        } else if(journalsOA[index] == "maybe"){
-            paragraph.setAttribute("style", "color: orange;")
-        } else{
-            paragraph.setAttribute("style", "color: red;")
+            paragraph = document.createElement("p")
+
+            if(journalsOA[index] == "yes"){
+                paragraph.setAttribute("style", "color: green;")
+            } else if(journalsOA[index] == "maybe"){
+                paragraph.setAttribute("style", "color: orange;")
+            } else{
+                paragraph.setAttribute("style", "color: red;")
+            }
+
+            bold = document.createElement("b")
+            journalNode = document.createTextNode(journalStr)
+            bold.appendChild(journalNode)
+            paragraph.appendChild(bold)
+            section.appendChild(paragraph)
+
+            paragraph = document.createElement("p")
+            tjNode = document.createTextNode(tjStr)
+            paragraph.appendChild(tjNode)
+            section.appendChild(paragraph)
+
+            paragraph = document.createElement("p")
+            foaNode = document.createTextNode(foaStr)
+            paragraph.appendChild(foaNode)
+            section.appendChild(paragraph)
+
+            paragraph = document.createElement("p")
+            taNode = document.createTextNode(taStr)
+            paragraph.appendChild(taNode)
+            section.appendChild(paragraph)
+
+            paragraph = document.createElement("p")
+            saNode = document.createTextNode(saStr)
+            paragraph.appendChild(saNode)
+            section.appendChild(paragraph)
+
+            element.appendChild(section)
         }
-
-        bold = document.createElement("b")
-        journalNode = document.createTextNode(journalStr)
-        bold.appendChild(journalNode)
-        paragraph.appendChild(bold)
-        section.appendChild(paragraph)
-
-        paragraph = document.createElement("p")
-        tjNode = document.createTextNode(tjStr)
-        paragraph.appendChild(tjNode)
-        section.appendChild(paragraph)
-
-        paragraph = document.createElement("p")
-        foaNode = document.createTextNode(foaStr)
-        paragraph.appendChild(foaNode)
-        section.appendChild(paragraph)
-
-        paragraph = document.createElement("p")
-        taNode = document.createTextNode(taStr)
-        paragraph.appendChild(taNode)
-        section.appendChild(paragraph)
-
-        paragraph = document.createElement("p")
-        saNode = document.createTextNode(saStr)
-        paragraph.appendChild(saNode)
-        section.appendChild(paragraph)
-
-        element.appendChild(section)
-        
     }
+    let counter = 1
+    let elem = document.getElementById("myFailures")
+    let section1 = document.createElement("div")
+    Object.keys(invalidEntries.failures).map((key) => {
+        let words = document.createElement("p")
+        words.setAttribute("style", "margin-bottom: 0")
+        let temper = document.createTextNode(counter++ + ". " + key)
+        words.appendChild(temper)
+        section1.appendChild(words)
+    });
+    elem.appendChild(section1)
 
 }
 

@@ -43,7 +43,7 @@
         
         <ul>
             <li hidden id="journalWarning1" style="font-weight: bolder;">
-                One or more of the entries in your bibliography contained no journal, and as such can yield no results.<br>
+                One or more of the entries in your bibliography contained no journal/organization, and as such can yield no results.<br>
                 Please check your bibliography and try again.
             </li>
             <li hidden id="funderWarning1" style="font-weight: bolder;">
@@ -75,7 +75,12 @@
         </p><br>
 
         <!-- Division for stats on each journal. Added to by JS -->
-        <div id="myResults"></div>
+        <div class="row">
+            <div id="myResults" class="col-6"></div>
+            <div id="myFailures" class="col-6">
+                <h4 style="text-decoration: underline; color: red;">Journals/Organizations that failed</h4>
+            </div>
+        </div>
     </main>
     <!-- End of main Results section -->
 
