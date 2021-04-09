@@ -1,13 +1,25 @@
+// Arrays of raw results from API call
 var results = []
+var undefined = []
+
+// Boolean to signal 1 or more bibliography entries without journals
+var missingJournals = false;
+
+// Arrays of sorted results from API call.
+// Matching indices imply corresponding queries.
 var journalsArr = []
 var tjArr = []
 var fully_oaArr = []
 var taArr = []
 var self_archivingArr = []
 
+// Array to keep track of whether journals are OA ("yes"|"no"|"maybe")
 var journalsOA = []
+
+// Strings for printing as HTML elements
 var journalStr, tjStr, foaStr, taStr, saStr
-    
+
+// HTML elements
 var element = document.getElementById("myResults")
 var section, paragraph, bold
 var journalNode, tjNode, foaNode, taNode, saNode
@@ -19,8 +31,21 @@ window.onload = async function() {
     for (let index = 0; index < urls.length; index++) {
         let url = urls[index];
         let result = await get(url)
-        results.push(result)
-        console.log(result)
+        if(result['request']['journal'].length >= 1 && 
+            result['request']['funder'].length >= 1 && 
+            result['request']['institution'].length >= 1){
+                results.push(result)
+                console.log("Sucess:")
+                console.log(result)
+        } else if(result['request']['journal'].length >= 1){
+            results.push(result)
+            console.log("No F/I:")
+            console.log(result)
+        } else{
+            console.log("Failure J:")
+            console.log(url)
+            missingJournals = true
+        }
     }
 
     populateArrays()
@@ -44,6 +69,7 @@ async function get(url) {
 async function populateArrays() {
 
     for (let index = 0; index < results.length; index++) {
+        
         journalsArr[index] = results[index]['request']['journal'][0]['title']
         tjArr[index] = results[index]['results'][0]['compliant']
         fully_oaArr[index] = results[index]['results'][1]['compliant']
@@ -65,16 +91,23 @@ async function populateArrays() {
 // Functions writes results to HTML page
 async function writeToPage(){
 
+    if(missingJournals){
+        document.getElementById("warningLine1").removeAttribute("hidden")
+        document.getElementById("warningLine2").removeAttribute("hidden")
+        document.getElementById("warningLine3").removeAttribute("hidden")
+        document.getElementById("warningBreak").removeAttribute("hidden")
+    }
+
     // Calculate percentages of OA and possible future OA journals
     let percOA = calculatePercentageOA()
     let percMaybeOA = calculatePercentageMaybeOA()
 
     // Write these percentages to the page
     document.getElementById("fullyOAPerc").innerHTML = (await percOA).toString() + "%"
-    document.getElementById("fullyOA").innerHTML = "of journals are fully Open-Access compliant with your funder and institution"
+    document.getElementById("fullyOA").innerHTML = "of journals are Fully Open-Access compliant with your funder and institution"
 
     document.getElementById("maybeOAPerc").innerHTML = (await percMaybeOA).toString() + "%"
-    document.getElementById("maybeOA").innerHTML = "of journals are on track to becoming Open-Access compliant in the future."
+    document.getElementById("maybeOA").innerHTML = "of journals that are not already Fully Open-Access are on track to becoming Open-Access compliant in the future."
 
     // Write information from each journal to page
     for (let index = 0; index < results.length; index++) {
@@ -184,5 +217,10 @@ async function calculatePercentageMaybeOA(){
     }
 
     // Calculate number that may be OA in the future, excluding those that are already fully OA
-    return ((maybeCounter - alreadyCounter) / (fully_oaArr.length - alreadyCounter)) * 100
+    if(maybeCounter > 0){
+        return ((maybeCounter - alreadyCounter) / (fully_oaArr.length - alreadyCounter)) * 100
+    }
+    else{
+        return 0
+    }
 }

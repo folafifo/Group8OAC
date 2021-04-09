@@ -39,12 +39,28 @@
 
     <!-- Main Results section -->
     <main class="container" style="padding-top: 5%; padding-bottom: 5%;">
-        <h1 id="fullyOAPerc"></h1>
+        <h1 hidden id="warningLine1" style="font-weight: bolder; color: red;">WARNING:</h1>
+        <p hidden id="warningLine2" style="font-weight: bolder;">
+            One or more of the entries in your bibliography contained no journal, and as such can yield no results.<br>
+            Please check your bibliography and try again.
+        </p>
+        <p hidden id="warningLine3" style="font-weight: bolder; color: red;">(The information shown below is based purely on those entries that do contain a journal)</p>
+        <br hidden id="warningBreak">
+
+        <h1 id="fullyOAPerc" style="padding-top: 3%;"></h1>
         <p id="fullyOA"></p>
         <br></br>
         <h1 id="maybeOAPerc"></h1>
         <p id="maybeOA"></p>
-        <br></br>
+        <br>
+
+        <p style="padding-top: 2%;"><b>Key:</b>
+            <ul style="padding-bottom: 2%;">
+                <li><b style="color: green;">GREEN</b> - fully open-access,</li>
+                <li><b style="color: red;">RED</b> - not open-access,</li>
+                <li><b style="color: orange;">YELLOW</b> - may be open access right now or in the future.</li>
+            </ul>     
+        </p><br>
 
         <!-- Division for stats on each journal. Added to by JS -->
         <div id="myResults"></div>
