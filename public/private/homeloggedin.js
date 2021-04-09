@@ -1,5 +1,9 @@
+var issn = ""
+var institution = "Trinity College Dublin"
+var funder = "Science Foundation Ireland"
 // Grab file and send to server for parsing
 let parsedData = "";
+let urls = []
 
 // Grabs the BibTeX file uploaded by the user and calls the runParser() function
 async function grabFile() {
@@ -77,7 +81,27 @@ async function runParser(input) {
   } else {
     // console logging the results for now, but will change when the JCT API caller is working
     jsonResponse["parsed"].forEach((element) => {
+      issn = element["JOURNAL"]
+      accessAPI(issn,institution,funder)
       console.log(element);
     });
+
+    localStorage.setItem("urls", JSON.stringify(urls))
+    window.location.replace("./results.html")
+  }
+}
+
+// Function to Access API
+async function accessAPI(issn,institution,funder){
+  if((issn != "") && (institution != "") && (funder != "")){
+      let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=${funder}`
+      urls.push(url)
+  }
+  else if ((issn != "") && (institution != "")){
+      let url = `https://api.journalcheckertool.org/calculate?issn=${issn}&ror=${institution}&funder=[funder]`
+      urls.push(url)
+  }
+  else{
+      console.log("Input is invalid")
   }
 }

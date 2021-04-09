@@ -1,0 +1,188 @@
+var results = []
+var journalsArr = []
+var tjArr = []
+var fully_oaArr = []
+var taArr = []
+var self_archivingArr = []
+
+var journalsOA = []
+var journalStr, tjStr, foaStr, taStr, saStr
+    
+var element = document.getElementById("myResults")
+var section, paragraph, bold
+var journalNode, tjNode, foaNode, taNode, saNode
+
+window.onload = async function() {
+
+    let urls = JSON.parse(localStorage.getItem("urls"))
+    
+    for (let index = 0; index < urls.length; index++) {
+        let url = urls[index];
+        let result = await get(url)
+        results.push(result)
+        console.log(result)
+    }
+
+    populateArrays()
+    writeToPage()
+}
+
+// Function performs Get Request from API
+async function get(url) {
+
+
+    const response =    await fetch(url, {
+        'method': 'GET',
+  
+    })
+  
+    let data = await response.json()
+    return data;
+}
+
+// Function populates results information arrays
+async function populateArrays() {
+
+    for (let index = 0; index < results.length; index++) {
+        journalsArr[index] = results[index]['request']['journal'][0]['title']
+        tjArr[index] = results[index]['results'][0]['compliant']
+        fully_oaArr[index] = results[index]['results'][1]['compliant']
+        taArr[index] = results[index]['results'][2]['compliant']
+        self_archivingArr[index] = results[index]['results'][3]['compliant']
+        if(fully_oaArr[index] == "yes"){
+            journalsOA[index] = "yes"
+        }
+        else if(tjArr[index] == "yes" || taArr[index] == "yes" || self_archivingArr[index] == "yes"){
+            journalsOA[index] = "maybe"
+        }
+        else{
+            journalsOA[index] = "no"
+        }
+    }
+
+}
+
+// Functions writes results to HTML page
+async function writeToPage(){
+
+    // Calculate percentages of OA and possible future OA journals
+    let percOA = calculatePercentageOA()
+    let percMaybeOA = calculatePercentageMaybeOA()
+
+    // Write these percentages to the page
+    document.getElementById("fullyOAPerc").innerHTML = (await percOA).toString() + "%"
+    document.getElementById("fullyOA").innerHTML = "of journals are fully Open-Access compliant with your funder and institution"
+
+    document.getElementById("maybeOAPerc").innerHTML = (await percMaybeOA).toString() + "%"
+    document.getElementById("maybeOA").innerHTML = "of journals are on track to becoming Open-Access compliant in the future."
+
+    // Write information from each journal to page
+    for (let index = 0; index < results.length; index++) {
+        journalStr = (journalsArr[index])
+        tjStr = ("- Transformative Journal: " + tjArr[index])
+        foaStr = ("- Fully Open-Access: " + fully_oaArr[index])
+        taStr = ("- Transformative Agreement: " + taArr[index])
+        saStr = ("- Self-Archiving: " + self_archivingArr[index])
+
+        section = document.createElement("div")
+        
+        style="color: green;"
+
+        paragraph = document.createElement("p")
+
+        if(journalsOA[index] == "yes"){
+            paragraph.setAttribute("style", "color: green;")
+        } else if(journalsOA[index] == "maybe"){
+            paragraph.setAttribute("style", "color: orange;")
+        } else{
+            paragraph.setAttribute("style", "color: red;")
+        }
+
+        bold = document.createElement("b")
+        journalNode = document.createTextNode(journalStr)
+        bold.appendChild(journalNode)
+        paragraph.appendChild(bold)
+        section.appendChild(paragraph)
+
+        paragraph = document.createElement("p")
+        tjNode = document.createTextNode(tjStr)
+        paragraph.appendChild(tjNode)
+        section.appendChild(paragraph)
+
+        paragraph = document.createElement("p")
+        foaNode = document.createTextNode(foaStr)
+        paragraph.appendChild(foaNode)
+        section.appendChild(paragraph)
+
+        paragraph = document.createElement("p")
+        taNode = document.createTextNode(taStr)
+        paragraph.appendChild(taNode)
+        section.appendChild(paragraph)
+
+        paragraph = document.createElement("p")
+        saNode = document.createTextNode(saStr)
+        paragraph.appendChild(saNode)
+        section.appendChild(paragraph)
+
+        element.appendChild(section)
+        
+    }
+
+}
+
+// Finds percentage of journals in our results that are fully OA
+async function calculatePercentageOA(){
+    
+    let counter = 0
+
+    for (let index = 0; index < fully_oaArr.length; index++) {
+        if(fully_oaArr[index] == "yes"){
+            counter++
+        }
+    }
+
+    return (counter / fully_oaArr.length) * 100
+}
+
+// Finds percentage of journals in our results that may be OA in the future
+async function calculatePercentageMaybeOA(){
+    
+    let maybeOA = new Array(results.length)
+    let maybeCounter = 0
+    let alreadyCounter = 0
+
+    // Find number of journals that may become OA in the future
+    // Use array to make sure not to count them twice
+    for (let index = 0; index < tjArr.length; index++) {
+        maybeOA[index] = tjArr[index]
+    }
+
+    for (let index = 0; index < taArr.length; index++) {
+        if(maybeOA[index] != "yes"){
+            maybeOA[index] = taArr[index]
+        }
+    }
+
+    for (let index = 0; index < self_archivingArr.length; index++) {
+        if(maybeOA[index] != "yes"){
+            maybeOA[index] = self_archivingArr[index]
+        }
+    }
+    
+    // Find number already fully OA
+    for (let index = 0; index < fully_oaArr.length; index++) {
+        if(fully_oaArr[index] == "yes"){
+            alreadyCounter++
+        }
+    }
+
+    // Calculate number that may be OA in the future
+    for (let index = 0; index < maybeOA.length; index++) {
+        if(maybeOA[index] == "yes"){
+            maybeCounter++
+        }
+    }
+
+    // Calculate number that may be OA in the future, excluding those that are already fully OA
+    return ((maybeCounter - alreadyCounter) / (fully_oaArr.length - alreadyCounter)) * 100
+}
