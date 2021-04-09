@@ -3,7 +3,9 @@ var results = []
 var undefined = []
 
 // Boolean to signal 1 or more bibliography entries without journals
-var missingJournals = false;
+var missingJournals = false
+var missingFunder = false
+var missingInst = false
 
 // Arrays of sorted results from API call.
 // Matching indices imply corresponding queries.
@@ -41,6 +43,12 @@ window.onload = async function() {
             results.push(result)
             console.log("No F/I:")
             console.log(result)
+            if(result['request']['funder'].length < 1){
+                missingFunder = true
+            }
+            if(result['request']['institution'].length < 1){
+                missingInst = true
+            }
         } else{
             console.log("Failure J:")
             console.log(url)
@@ -91,11 +99,20 @@ async function populateArrays() {
 // Functions writes results to HTML page
 async function writeToPage(){
 
-    if(missingJournals){
-        document.getElementById("warningLine1").removeAttribute("hidden")
-        document.getElementById("warningLine2").removeAttribute("hidden")
-        document.getElementById("warningLine3").removeAttribute("hidden")
+    if(missingJournals ||  missingFunder || missingInst){
+        document.getElementById("warningTitle").removeAttribute("hidden")
+        document.getElementById("warningDivider").removeAttribute("hidden")
         document.getElementById("warningBreak").removeAttribute("hidden")
+    }
+    if(missingJournals){
+        document.getElementById("journalWarning1").removeAttribute("hidden")
+        document.getElementById("journalWarning2").removeAttribute("hidden")
+    }
+    if(missingFunder){
+        document.getElementById("funderWarning1").removeAttribute("hidden")
+    }
+    if(missingInst){
+        document.getElementById("instWarning1").removeAttribute("hidden")
     }
 
     // Calculate percentages of OA and possible future OA journals

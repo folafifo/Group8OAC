@@ -39,20 +39,32 @@
 
     <!-- Main Results section -->
     <main class="container" style="padding-top: 5%; padding-bottom: 5%;">
-        <h1 hidden id="warningLine1" style="font-weight: bolder; color: red;">WARNING:</h1>
-        <p hidden id="warningLine2" style="font-weight: bolder;">
-            One or more of the entries in your bibliography contained no journal, and as such can yield no results.<br>
-            Please check your bibliography and try again.
-        </p>
-        <p hidden id="warningLine3" style="font-weight: bolder; color: red;">(The information shown below is based purely on those entries that do contain a journal)</p>
+        <h1 hidden id="warningTitle" style="font-weight: bolder; color: red;">WARNING:</h1>
+        
+        <ul>
+            <li hidden id="journalWarning1" style="font-weight: bolder;">
+                One or more of the entries in your bibliography contained no journal, and as such can yield no results.<br>
+                Please check your bibliography and try again.
+            </li>
+            <li hidden id="funderWarning1" style="font-weight: bolder;">
+                The Funder you have entered is invalid, and thus some results, namely "Self-Archiving", are liable to be incorrect.
+            </li>
+            <li hidden id="instWarning1" style="font-weight: bolder;">
+                The Institution you have entered is invalid, and thus some results, namely "Transformative Agreement", are liable to be incorrect.
+            </li>
+        </ul>
+
+        <p hidden id="journalWarning2" style="font-weight: bolder; color: red;">(The information shown below is based purely on those entries that do contain a journal)</p>
+        <hr hidden id="warningDivider" style="color: red;"/>
         <br hidden id="warningBreak">
 
-        <h1 id="fullyOAPerc" style="padding-top: 3%;"></h1>
+        <h1 id="fullyOAPerc"></h1>
         <p id="fullyOA"></p>
         <br></br>
         <h1 id="maybeOAPerc"></h1>
         <p id="maybeOA"></p>
         <br>
+        <hr/>
 
         <p style="padding-top: 2%;"><b>Key:</b>
             <ul style="padding-bottom: 2%;">
