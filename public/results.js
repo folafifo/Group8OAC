@@ -203,7 +203,6 @@ async function writeToPage(){
         section1.appendChild(words)
     });
     elem.appendChild(section1)
-
 }
 
 // Finds percentage of journals in our results that are fully OA
