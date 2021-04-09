@@ -7,7 +7,6 @@ div.container-fluid a.navbar-brand {
 
 .collapse.navbar-collapse ul{
   margin: auto;
-  
 }
 
 .collapse.navbar-collapse ul li {
@@ -26,17 +25,6 @@ div.container-fluid a.navbar-brand {
 
 .navbar-toggler span.navbar-toggler-icon {
   filter: invert(100%);
-}
-
-.card {
-  max-width: 40%;
-  margin: auto;
-  margin-top: 10%;
-  background-color: #002435;
-}
-
-.card * {
-  color: white;
 }
 
 div ul.navbar-nav {
