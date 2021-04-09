@@ -104,7 +104,7 @@ async function runParser(input) {
      
       accessAPI(issn,institution,funder)
     });
-    localStorage.setItem("urls", JSON.stringify(urls))
+    sessionStorage.setItem("urls", JSON.stringify(urls))
     window.location.replace("./results.html")
 
   }

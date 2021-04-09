@@ -21,7 +21,6 @@ var self_archivingArr = []
 var hasSeenArr = {}
 var invalidEntries = {failures: {}}
 
-
 // Array to keep track of whether journals are OA ("yes"|"no"|"maybe")
 var journalsOA = []
 
@@ -30,12 +29,13 @@ var journalStr, tjStr, foaStr, taStr, saStr
 
 // HTML elements
 var element = document.getElementById("myResults")
-var section, paragraph, bold
+var row, col, paragraph, bold, br
 var journalNode, tjNode, foaNode, taNode, saNode
+var sectionIndex
 
 window.onload = async function() {
 
-    let urls = JSON.parse(localStorage.getItem("urls"))
+    let urls = JSON.parse(sessionStorage.getItem("urls"))
     for (let index = 0; index < urls.length; index++) {
         let url = urls[index];
         let result = await get(url)
@@ -43,7 +43,7 @@ window.onload = async function() {
             result['request']['funder'].length >= 1 && 
             result['request']['institution'].length >= 1){
                 results.push(result)
-                console.log("Sucess:")
+                console.log("Success:")
                 console.log(result)
         } else if(result['request']['journal'].length >= 1){
             results.push(result)
@@ -66,6 +66,9 @@ window.onload = async function() {
             }
         }
     }
+
+    document.getElementById("loadingQuery").toggleAttribute("hidden")
+    document.getElementById("loadingResults").toggleAttribute("hidden")
 
     populateArrays()
     writeToPage()
@@ -112,6 +115,8 @@ async function populateArrays() {
 // Functions writes results to HTML page
 async function writeToPage(){
 
+    document.getElementById("loadingResults").toggleAttribute("hidden")
+
     if(missingJournals ||  missingFunder || missingInst){
         document.getElementById("warningTitle").removeAttribute("hidden")
         document.getElementById("warningDivider").removeAttribute("hidden")
@@ -128,16 +133,21 @@ async function writeToPage(){
         document.getElementById("instWarning1").removeAttribute("hidden")
     }
 
+    document.getElementById("keyTitle").removeAttribute("hidden")
+    document.getElementById("keyContents").removeAttribute("hidden")
+
     // Calculate percentages of OA and possible future OA journals
     let percOA = calculatePercentageOA()
     let percMaybeOA = calculatePercentageMaybeOA()
 
     // Write these percentages to the page
-    document.getElementById("fullyOAPerc").innerHTML = (await percOA).toString() + "%"
-    document.getElementById("fullyOA").innerHTML = "of journals are Fully Open-Access compliant with your funder and institution"
+    document.getElementById("fullyOAPerc").innerHTML = (await percOA).toFixed(0) + "%"
+    document.getElementById("fullyOA").innerHTML = "of valid journals are Fully Open-Access compliant with your funder and institution"
 
-    document.getElementById("maybeOAPerc").innerHTML = (await percMaybeOA).toString() + "%"
-    document.getElementById("maybeOA").innerHTML = "of journals that are not already Fully Open-Access are on track to becoming Open-Access compliant in the future."
+    document.getElementById("maybeOAPerc").innerHTML = (await percMaybeOA).toFixed(0) + "%"
+    document.getElementById("maybeOA").innerHTML = "of valid journals that are not already Fully Open-Access are on track to becoming Open-Access compliant in the future."
+
+    sectionIndex = 0
 
     // Write information from each journal to page
     for (let index = 0; index < results.length; index++) {
@@ -149,10 +159,13 @@ async function writeToPage(){
             taStr = ("- Transformative Agreement: " + taArr[index])
             saStr = ("- Self-Archiving: " + self_archivingArr[index])
 
-            section = document.createElement("div")
-
-            style="color: green;"
-
+            if(sectionIndex % 3 == 0){
+                row = document.createElement("div")
+                row.setAttribute("class", "row")
+            }
+    
+            col = document.createElement("div")
+            col.setAttribute("class", "col-4")
             paragraph = document.createElement("p")
 
             if(journalsOA[index] == "yes"){
@@ -167,31 +180,44 @@ async function writeToPage(){
             journalNode = document.createTextNode(journalStr)
             bold.appendChild(journalNode)
             paragraph.appendChild(bold)
-            section.appendChild(paragraph)
+            col.appendChild(paragraph)
 
             paragraph = document.createElement("p")
             tjNode = document.createTextNode(tjStr)
             paragraph.appendChild(tjNode)
-            section.appendChild(paragraph)
+            col.appendChild(paragraph)
 
             paragraph = document.createElement("p")
             foaNode = document.createTextNode(foaStr)
             paragraph.appendChild(foaNode)
-            section.appendChild(paragraph)
+            col.appendChild(paragraph)
 
             paragraph = document.createElement("p")
             taNode = document.createTextNode(taStr)
             paragraph.appendChild(taNode)
-            section.appendChild(paragraph)
+            col.appendChild(paragraph)
 
             paragraph = document.createElement("p")
             saNode = document.createTextNode(saStr)
             paragraph.appendChild(saNode)
-            section.appendChild(paragraph)
+            col.appendChild(paragraph)
 
-            element.appendChild(section)
+            br = document.createElement("br")
+            col.appendChild(br)
+            row.appendChild(col)
+    
+            if(sectionIndex % 3 == 2 || index == results.length - 1){
+                element.appendChild(row)
+            }
+        } else{
+            sectionIndex--
+            if(index == results.length - 1){
+                element.appendChild(row)
+            }
         }
+        sectionIndex++
     }
+
     let counter = 1
     let elem = document.getElementById("myFailures")
     let section1 = document.createElement("div")
@@ -203,6 +229,11 @@ async function writeToPage(){
         section1.appendChild(words)
     });
     elem.appendChild(section1)
+
+    if(counter - 1 > 0){
+        document.getElementById("failedDivider").toggleAttribute("hidden")
+        document.getElementById("failedJournals").toggleAttribute("hidden")
+    }
 }
 
 // Finds percentage of journals in our results that are fully OA
