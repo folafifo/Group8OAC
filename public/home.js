@@ -55,8 +55,12 @@ async function grabFile() {
 
 // Grabs the text inputted by the user and calls the runParser() function
 async function grabText() {
+  
   var input = document.getElementById("inputBibText").value;
-  if (String(input).length > 20000) {
+  funder = document.getElementById("inputFunder").value;
+  institution = document.getElementById("inputInstitution").value;
+
+  if (String(input).length > 30000) {
     alert("The input is too large... Please try again")
   }
   else if (input === "") {
