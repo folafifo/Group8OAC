@@ -142,10 +142,10 @@ async function writeToPage(){
 
     // Write these percentages to the page
     document.getElementById("fullyOAPerc").innerHTML = (await percOA).toFixed(0) + "%"
-    document.getElementById("fullyOA").innerHTML = "of valid journals are Fully Open-Access compliant with your funder and institution"
+    document.getElementById("fullyOA").innerHTML = "of bibliography entries with valid journals are Fully Open-Access compliant with your funder and institution"
 
     document.getElementById("maybeOAPerc").innerHTML = (await percMaybeOA).toFixed(0) + "%"
-    document.getElementById("maybeOA").innerHTML = "of valid journals that are not already Fully Open-Access are on track to becoming Open-Access compliant in the future."
+    document.getElementById("maybeOA").innerHTML = "of bibliography entries with valid journals that are not already Fully Open-Access are on track to becoming Open-Access compliant in the future."
 
     sectionIndex = 0
 
