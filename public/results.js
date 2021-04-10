@@ -71,6 +71,26 @@ window.onload = async function() {
     document.getElementById("loadingResults").toggleAttribute("hidden")
 
     populateArrays()
+
+    var objToSave = {
+        results: results,
+        journalsArr: journalsArr,
+        tjArr: tjArr,
+        fully_oaArr: fully_oaArr,
+        taArr: taArr,
+        self_archivingArr: self_archivingArr,
+        date: Date()
+    };
+    
+    // Using the more low level lirary as we dont need a response from the server
+    // in the way a fetch would wait for
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/uploadQueryToDatabase", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(objToSave));
+    console.log("Sucessfully sent post to database route")
+
+
     writeToPage()
 }
 

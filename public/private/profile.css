@@ -1,0 +1,33 @@
+/* Color of the brand */
+div.container-fluid a.navbar-brand {
+  font-size: 2rem;
+  color: white;
+  overflow-x: hidden;
+}
+
+.collapse.navbar-collapse ul{
+  margin: auto;
+}
+
+.collapse.navbar-collapse ul li {
+  font-size: 1.5rem;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active) {
+  color: white;
+}
+
+.collapse.navbar-collapse ul li a:is(.nav-link, .nav-link.active):hover {
+  color: black;
+}
+
+.navbar-toggler span.navbar-toggler-icon {
+  filter: invert(100%);
+}
+
+div ul.navbar-nav {
+  width: 100%;
+  justify-content: flex-end;
+}
