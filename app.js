@@ -165,7 +165,7 @@ app.post("/unparsed", (request, response) => {
 // query to be stored to the db
 app.post("/uploadQueryToDatabase", express.json(),  (request, response) => {
     if(request.oidc.isAuthenticated()) {
-        console.log("We have the query results:" + request.body);
+        //console.log("We have the query results:" + request.body);
         
         var queryToSave = request.body;
         var date = queryToSave.date;
@@ -174,8 +174,8 @@ app.post("/uploadQueryToDatabase", express.json(),  (request, response) => {
         userToSave.save().catch(error => console.log(error));
 
     }else{
-        console.log("Dont do nothing as client is not logged in")
-        console.log(toSee);
+        //console.log("Dont do nothing as client is not logged in")
+        //console.log(toSee);
     }
 })
 
