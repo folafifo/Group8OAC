@@ -86,7 +86,7 @@ async function runParser(input) {
       console.log(element);
     });
 
-    localStorage.setItem("urls", JSON.stringify(urls))
+    sessionStorage.setItem("urls", JSON.stringify(urls))
     window.location.replace("./results.html")
   }
 }

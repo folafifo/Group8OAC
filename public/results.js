@@ -169,7 +169,7 @@ async function writeToPage(){
             paragraph = document.createElement("p")
 
             if(journalsOA[index] == "yes"){
-                paragraph.setAttribute("style", "color: green;")
+                paragraph.setAttribute("style", "color: limegreen;")
             } else if(journalsOA[index] == "maybe"){
                 paragraph.setAttribute("style", "color: orange;")
             } else{
