@@ -15,7 +15,7 @@
     <!-- Start of nav bar -->
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #006aa6;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./home.html">Open Access Checker Tool</a>
+            <a class="navbar-brand" href="./">Open Access Checker Tool</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -39,11 +39,15 @@
 
     <!-- Main Results section -->
     <main class="container" style="padding-top: 5%; padding-bottom: 5%;">
+        
+        <h1 id="loadingQuery">Running your query...</h1>
+        <h1 hidden id="loadingResults">Loading your results...</h1>
+        
         <h1 hidden id="warningTitle" style="font-weight: bolder; color: red;">WARNING:</h1>
         
         <ul>
             <li hidden id="journalWarning1" style="font-weight: bolder;">
-                One or more of the entries in your bibliography contained no journal/organization, and as such can yield no results.<br>
+                One or more of the entries in your bibliography contained an invalid journal/organization, and as such can yield no results.<br>
                 Please check your bibliography and try again.
             </li>
             <li hidden id="funderWarning1" style="font-weight: bolder;">
@@ -54,7 +58,10 @@
             </li>
         </ul>
 
-        <p hidden id="journalWarning2" style="font-weight: bolder; color: red;">(The information shown below is based purely on those entries that do contain a journal)</p>
+        <p hidden id="journalWarning2" style="font-weight: bolder; color: red;">
+            The information shown below is based purely on those entries that do contain a valid journal/organization.<br/>
+            For the list of invalid journals/organizations, see the bottom of this page.
+        </p>
         <hr hidden id="warningDivider" style="color: red;"/>
         <br hidden id="warningBreak">
 
@@ -66,20 +73,19 @@
         <br>
         <hr/>
 
-        <p style="padding-top: 2%;"><b>Key:</b>
-            <ul style="padding-bottom: 2%;">
-                <li><b style="color: green;">GREEN</b> - fully open-access,</li>
+        <p id="keyTitle" hidden style="padding-top: 2%;"><b>Key:</b>
+            <ul id="keyContents" hidden style="padding-bottom: 2%;">
+                <li><b style="color: limegreen;">GREEN</b> - fully open-access,</li>
                 <li><b style="color: red;">RED</b> - not open-access,</li>
                 <li><b style="color: orange;">YELLOW</b> - may be open access right now or in the future.</li>
             </ul>     
         </p><br>
 
         <!-- Division for stats on each journal. Added to by JS -->
-        <div class="row">
-            <div id="myResults" class="col-6"></div>
-            <div id="myFailures" class="col-6">
-                <h4 style="text-decoration: underline; color: red;">Journals/Organizations that failed</h4>
-            </div>
+        <div id="myResults" class="row"></div>
+        <hr id="failedDivider" hidden style="color: red; margin-bottom:3%;"/>
+        <div id="myFailures" class="row" style="font-size: small;">
+            <h4 id="failedJournals" hidden style="text-decoration: underline; color: red;">Journals/Organizations that failed</h4>
         </div>
     </main>
     <!-- End of main Results section -->
