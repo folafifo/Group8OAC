@@ -25,11 +25,13 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var messagesSchema = new mongoose.Schema({
     username: String,
     email: String,
-    queryiesByDate: [{ query: String, date: Date , journal: String}]
+    queryiesByDate: [{ query: Object, date: Date}]
 });
 
 // Here we formally make our schema into a mongoose schema
-var MessageModel = mongoose.model('User database', messagesSchema);
+var UserModel = mongoose.model('User database', messagesSchema);
+// This gets assigned below
+var userToSave = undefined;
 
 // This message gets called below to add a user entry. We must always first check
 // that only one or zero database entry exists at any one time. We will use email addresses
@@ -39,17 +41,14 @@ var addUser = function(name, email){
     // And here we create an instance of the schema to later save to the db.
     // Here is an example of what could go in as an element of the queryiesByDate
     // list: {query: "trialQuery", date: Date(), journal: "TestJournal"}
-    var messageToSave = new MessageModel({
+    userToSave = new UserModel({
         username: name,
         email: email,
         queryiesByDate: []
     })
 
     // This does the saving
-    messageToSave.save().then(() => {
-        mongoose.disconnect();
-    })
-    .catch(error => console.log(error));
+    userToSave.save().catch(error => console.log(error));
     
 }
 
@@ -102,7 +101,7 @@ app.get('/', (req, res) => {
         var logged_in_email = req.oidc.user.email;
         var logged_in_name = req.oidc.user.name;
 
-        MessageModel.find(function(err, userDocuments){
+        UserModel.find(function(err, userDocuments){
             
             // If we get something back for this var, meaning the collection exists
             if(userDocuments){
@@ -114,7 +113,13 @@ app.get('/', (req, res) => {
                     addUser(logged_in_name, logged_in_email)
                 }else if(refined.length > 1){
                     throw new Error("ERROR - too many database entries for this email")
+                }else /*if its equal to 1*/{
+                    userToSave = refined[0];
                 }
+
+                // Be conscious that the else clasue above will result in the user needing to
+                // first go to the homepage before going to the results. So a reload of the 
+                // results route after a server restart will cause problems
 
             }
         });
@@ -127,7 +132,11 @@ app.get('/', (req, res) => {
 /* This is the proof of concept to get profile data for the logged in user. If a
 ** non-logged in user tried to access this route they are redirected to log in */
 app.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
+    res.sendFile('./public/private/profile.html', { root: __dirname });
+})
+
+app.get('/profileData', requiresAuth(), (req, res) => {
+    res.json(userToSave.queryiesByDate);
 })
 
 /* This is the parser route that parses the text input and returns the results as a
@@ -151,6 +160,24 @@ app.post("/unparsed", (request, response) => {
         });
     }
 });
+
+// This route gets a post request sent to it with a body containing the
+// query to be stored to the db
+app.post("/uploadQueryToDatabase", express.json(),  (request, response) => {
+    if(request.oidc.isAuthenticated()) {
+        //console.log("We have the query results:" + request.body);
+        
+        var queryToSave = request.body;
+        var date = queryToSave.date;
+
+        userToSave.queryiesByDate.push({query: queryToSave, date: date});
+        userToSave.save().catch(error => console.log(error));
+
+    }else{
+        //console.log("Dont do nothing as client is not logged in")
+        //console.log(toSee);
+    }
+})
 
 // Start the server
 app.listen(PORT);
