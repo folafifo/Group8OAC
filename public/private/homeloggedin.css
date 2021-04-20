@@ -29,7 +29,10 @@ div.container-fluid a.navbar-brand {
 }
 
 .card {
-  max-width: 100%;
+  max-width: 40%;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
   background-color: #002435;
 }
 
@@ -57,8 +60,4 @@ div ul.navbar-nav {
 
 #textinputandbutton {
   justify-content: center;
-}
-
-.row {
-  margin-top: 10%;
 }
