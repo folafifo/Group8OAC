@@ -14,3 +14,6 @@
 ## Note
 - 'How it works' page has key information about how our web application works.
 - 'FAQ' has information about what it means to be 'Self-Archiving', 'Transformative Journals', etc.
+
+## Demo video link
+https://www.youtube.com/watch?v=FGVRtbUe7Fc&ab_channel=KianPeader
